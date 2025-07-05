@@ -16,6 +16,16 @@ export const SearchFilters = () => {
   const languages = ['Hindi', 'English', 'Marathi', 'Tamil', 'Telugu', 'Gujarati', 'Bengali', 'Kannada'];
   const categories = ['Fashion', 'Food', 'Travel', 'Tech', 'Fitness', 'Beauty', 'Lifestyle', 'Entertainment'];
 
+  const handleSearch = () => {
+    console.log('Search initiated with:', {
+      query: searchQuery,
+      filters: selectedFilters
+    });
+    
+    // Show search feedback to user
+    alert(`Searching for influencers with query: "${searchQuery || 'All'}" and filters: ${JSON.stringify(selectedFilters, null, 2)}`);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
       <div className="flex items-center justify-between mb-6">
@@ -36,6 +46,7 @@ export const SearchFilters = () => {
               placeholder="Search by username, niche, or hashtag..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
@@ -85,7 +96,10 @@ export const SearchFilters = () => {
 
         {/* Search Button */}
         <div className="lg:col-span-2">
-          <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+          <button 
+            onClick={handleSearch}
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+          >
             Search Influencers
           </button>
         </div>
