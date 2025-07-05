@@ -7,6 +7,7 @@ import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
 import { CampaignManager } from '../components/CampaignManager';
 import { ComplianceTracker } from '../components/ComplianceTracker';
 import { RegionalInsights } from '../components/RegionalInsights';
+import { SearchProvider } from '../contexts/SearchContext';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('discover');
@@ -15,10 +16,12 @@ const Index = () => {
     switch (activeTab) {
       case 'discover':
         return (
-          <div className="space-y-6">
-            <SearchFilters />
-            <InfluencerGrid />
-          </div>
+          <SearchProvider>
+            <div className="space-y-6">
+              <SearchFilters />
+              <InfluencerGrid />
+            </div>
+          </SearchProvider>
         );
       case 'analytics':
         return <AnalyticsDashboard />;
@@ -30,10 +33,12 @@ const Index = () => {
         return <RegionalInsights />;
       default:
         return (
-          <div className="space-y-6">
-            <SearchFilters />
-            <InfluencerGrid />
-          </div>
+          <SearchProvider>
+            <div className="space-y-6">
+              <SearchFilters />
+              <InfluencerGrid />
+            </div>
+          </SearchProvider>
         );
     }
   };

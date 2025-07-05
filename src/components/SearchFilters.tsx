@@ -1,16 +1,16 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Search, MapPin, Users, TrendingUp, Filter } from 'lucide-react';
+import { useSearch } from '../contexts/SearchContext';
 
 export const SearchFilters = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilters, setSelectedFilters] = useState({
-    location: '',
-    language: '',
-    category: '',
-    followersRange: '',
-    engagementRate: ''
-  });
+  const { 
+    searchQuery, 
+    setSearchQuery, 
+    filters, 
+    setFilters, 
+    setIsSearchActive 
+  } = useSearch();
 
   const locations = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Pune', 'Hyderabad', 'Ahmedabad'];
   const languages = ['Hindi', 'English', 'Marathi', 'Tamil', 'Telugu', 'Gujarati', 'Bengali', 'Kannada'];
@@ -19,11 +19,21 @@ export const SearchFilters = () => {
   const handleSearch = () => {
     console.log('Search initiated with:', {
       query: searchQuery,
-      filters: selectedFilters
+      filters: filters
     });
     
-    // Show search feedback to user
-    alert(`Searching for influencers with query: "${searchQuery || 'All'}" and filters: ${JSON.stringify(selectedFilters, null, 2)}`);
+    // Trigger the search by setting isSearchActive to true
+    setIsSearchActive(true);
+  };
+
+  const handleFilterChange = (filterKey: string, value: string) => {
+    const newFilters = { ...filters, [filterKey]: value };
+    setFilters(newFilters);
+    
+    // Auto-trigger search when filters change
+    if (value !== '') {
+      setIsSearchActive(true);
+    }
   };
 
   return (
@@ -55,8 +65,8 @@ export const SearchFilters = () => {
         {/* Location Filter */}
         <div className="lg:col-span-2">
           <select
-            value={selectedFilters.location}
-            onChange={(e) => setSelectedFilters({...selectedFilters, location: e.target.value})}
+            value={filters.location}
+            onChange={(e) => handleFilterChange('location', e.target.value)}
             className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="">All Cities</option>
@@ -69,8 +79,8 @@ export const SearchFilters = () => {
         {/* Language Filter */}
         <div className="lg:col-span-2">
           <select
-            value={selectedFilters.language}
-            onChange={(e) => setSelectedFilters({...selectedFilters, language: e.target.value})}
+            value={filters.language}
+            onChange={(e) => handleFilterChange('language', e.target.value)}
             className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="">All Languages</option>
@@ -83,8 +93,8 @@ export const SearchFilters = () => {
         {/* Category Filter */}
         <div className="lg:col-span-2">
           <select
-            value={selectedFilters.category}
-            onChange={(e) => setSelectedFilters({...selectedFilters, category: e.target.value})}
+            value={filters.category}
+            onChange={(e) => handleFilterChange('category', e.target.value)}
             className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="">All Categories</option>
@@ -110,8 +120,8 @@ export const SearchFilters = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Followers Range</label>
           <select
-            value={selectedFilters.followersRange}
-            onChange={(e) => setSelectedFilters({...selectedFilters, followersRange: e.target.value})}
+            value={filters.followersRange}
+            onChange={(e) => handleFilterChange('followersRange', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="">Any Range</option>
@@ -125,8 +135,8 @@ export const SearchFilters = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Engagement Rate</label>
           <select
-            value={selectedFilters.engagementRate}
-            onChange={(e) => setSelectedFilters({...selectedFilters, engagementRate: e.target.value})}
+            value={filters.engagementRate}
+            onChange={(e) => handleFilterChange('engagementRate', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="">Any Rate</option>
@@ -138,7 +148,11 @@ export const SearchFilters = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Content Type</label>
-          <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          <select 
+            value={filters.contentType}
+            onChange={(e) => handleFilterChange('contentType', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          >
             <option value="">All Types</option>
             <option value="reels">Reels Focus</option>
             <option value="posts">Posts Focus</option>
