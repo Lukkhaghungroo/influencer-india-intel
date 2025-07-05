@@ -118,7 +118,7 @@ export const SearchFilters = () => {
             <option value="">Any Rate</option>
             <option value="high">High (5%+)</option>
             <option value="medium">Medium (2-5%)</option>
-            <option value="low">Low (<2%)</option>
+            <option value="low">Low (&lt;2%)</option>
           </select>
         </div>
 
